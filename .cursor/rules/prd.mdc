@@ -1,0 +1,181 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+Checklist
+- Define scope and roles for MVP Finance Tracker
+- Specify essential core features and acceptance criteria
+- Map primary user flows for first session usability
+- Outline pages and minimal UI using HextaUI (Card, Button)
+- Provide design and technical guidelines with stack and install steps
+- Supply example data for out-of-the-box testing
+Overview
+Build a minimal, modern Finance Tracker MVP to record transactions, view balances, set basic
+budgets, and see simple analytics. The MVP focuses on fast manual entry, clear summaries, and
+seed data to validate UI/UX and data flow within a single build session.
+Target Audience
+- Individuals who want a simple tool to track spending and income manually.
+- Early adopters validating core flows before bank integrations.
+- Budget-conscious users needing basic category budgets and summaries.
+Core Features
+1) Authenticate Users (Stubbed for MVP)
+- Provide a basic email/password login form and a fake session toggle.
+- Roles: user (default), admin (hidden/not used in MVP).
+Acceptance:
+- User can “Sign In” with any email/password and gets a mock session.
+- “Sign Out” clears session state.
+2) Manage Accounts
+- Create simple accounts: Checking, Savings, Credit Card.
+- Display balances (calculated from transactions).
+Acceptance:
+- User can add/edit/delete accounts.
+- Balance updates instantly when transactions change.
+3) Record Transactions
+- Add income, expense, transfer with date, account, amount, category, notes.
+- Categorization: Food, Bills, Transport, Entertainment, Salary, Other.
+- Tagging: optional comma-separated tags.
+Acceptance:
+- User can add/edit/delete transactions.
+- Transfer moves funds between accounts (two linked entries).
+- Category and amount validations required.
+4) Track Budgets by Category (Monthly)
+- Set a monthly budget per category.
+- Show spent vs remaining with color cue.
+Acceptance:
+- User can set/edit budget per category.
+- Progress bar shows spent/remaining for current month.
+5) View Analytics (Basic)
+- Spending by category for current month.
+- Income vs Expense summary for current month.
+Acceptance:
+- Pie or bar chart substitute using simple stacked bars or list with percentages.
+- Net cash flow displayed.
+User Flows
+1) First-Time Use Flow
+- Land on Sign In page -> Click “Demo Login” -> Redirect to Dashboard with example data loaded.
+2) Add Transaction Flow
+- From Dashboard -> Click “Add Transaction” -> Fill form -> Save -> Dashboard updates balances,
+budgets, analytics.
+3) Create Account Flow
+- Accounts page -> Add Account -> Choose type, name, currency (default USD, no conversion) ->
+Save -> Appears in balances.
+4) Set Budget Flow
+- Budgets page -> For category row, enter monthly amount -> Save -> See progress bar.
+5) Edit/Delete Flow
+- From Transactions table -> Click row -> Edit in modal -> Save changes OR Delete -> Data
+updates across views.
+Pages
+1) Sign In
+- Elements: Email, Password, “Demo Login” Button, “Sign In” Button.
+- Behavior: Demo Login sets mock session and loads example data.
+2) Dashboard
+- Components:
+- Accounts Summary (Card): list accounts with balances and total net balance.
+- Quick Add Transaction (Card): Type, Account, Amount, Category, Date, Notes, Save Button.
+- Monthly Overview (Card): Net cash flow, Top 3 spending categories.
+- Actions: Navigate to Transactions, Budgets, Accounts.
+3) Transactions
+- Components:
+- Filters: Date range (default current month), Type, Account, Category.
+- Table: Date, Account, Type, Category, Amount, Notes, Tags.
+- Actions: Add Transaction, Edit, Delete; Bulk import stub button (disabled with tooltip
+“Post-MVP”).
+- Acceptance: Filter updates table instantly.
+4) Budgets
+- Components:
+- Category rows with Budget input and Spent/Remaining display.
+- Progress visualization using bars inside Card.
+- Actions: Save Budget per category.
+5) Accounts
+- Components:
+- List of accounts with type and current balance.
+- Add/Edit/Delete account modals.
+- Acceptance: Deleting an account with transactions shows inline warning and prevents delete
+(MVP: block delete if transactions exist).
+6) Settings (Profile stub)
+- Components:
+- Name, Email (read-only), Currency (default USD), Locale (en-US).
+- Acceptance: Allow changing Name; currency selection stored but no conversion applied in MVP.
+UI/Design Specifics
+- Visual Style: Clean, modern, minimalistic.
+- Layout:
+- App shell: Top navbar with app name and Sign Out. Left sidebar: Dashboard, Transactions,
+Budgets, Accounts, Settings.
+- Content: max-width 1200px, generous spacing (24px).
+- Components (HextaUI):
+- Card: Wrap all content sections.
+- Button: Primary for actions; Secondary for cancel.
+- Typography: System font stack; headings 20-24px, body 14-16px.
+- Color use:
+- Primary: hsl(235,100%,60%)
+- Success/positive: use primary
+- Warning/over-budget: hsl(9,96%,47%)
+- State:
+- Loading: skeleton divs inside Cards.
+- Empty states: Short message and primary button.
+- Accessibility:
+- Keyboard focus visible using --color-ring.
+- Form labels and aria-live for toasts.
+Technical Notes
+- Stack: React + Tailwind CSS + HextaUI (Card, Button). Optional Zustand or Context for state.
+- Routing: client-side (e.g., React Router) with protected route wrapper based on mock session.
+- Data: In-memory state for MVP; allow reset to example data. Persist to localStorage for session
+continuity.
+- Currency: Single currency (USD) for MVP. No conversion logic.
+- Date handling: Use native Date. Default to current month filter.
+- Charts: Use simple CSS bars or inline percentage text; avoid external chart libs for MVP.
+- Validation: Amount > 0, required fields for type/account/amount/category/date.
+- Error states: Inline error text under fields.
+- Notifications: Simple toast via temporary div; no external service.
+HextaUI Setup
+- Install dependencies
+- npm install @radix-ui/react-slot class-variance-authority
+- Install components
+- npx hextaui@latest add card button
+- Theme CSS variables (add to global CSS)
+/*
+@theme {
+--radius-ele: 0.8rem;
+--radius-card: 1rem;
+--color-background: hsl(0, 0%, 100%);
+--color-foreground: hsl(0, 0%, 14%);
+--color-card: hsl(0, 0%, 99%);
+--color-card-foreground: hsl(0, 0%, 14%);
+--color-primary: hsl(235, 100%, 60%);
+--color-primary-foreground: hsl(0, 0%, 98%);
+--color-secondary: hsl(0, 0%, 97%);
+--color-secondary-foreground: hsl(0, 0%, 20%);
+--color-muted: hsl(0, 0%, 97%);
+--color-muted-foreground: hsl(0, 0%, 56%);
+--color-accent: hsl(0, 0%, 96%);
+--color-accent-foreground: hsl(0, 0%, 20%);
+--color-destructive: hsl(9, 96%, 47%);
+--color-destructive-foreground: hsl(0, 0%, 98%);
+--color-border: hsl(0, 0%, 92%);
+--color-input: hsl(0, 0%, 100%);
+--color-ring: hsl(0, 0%, 71%);
+}
+*/
+State Shape (suggested)
+- session: { isAuthenticated: boolean, user: { id, name, email } }
+- accounts: [{ id, name, type: 'checking'|'savings'|'credit', currency: 'USD' }]
+- transactions: [{ id, date, accountId, type: 'income'|'expense'|'transfer', amountCents, category,
+notes, tags: string[], transferLinkId?: string }]
+- budgets: { [category]: { amountCents, month: 'YYYY-MM' } }
+- settings: { currency: 'USD', locale: 'en-US', name }
+Acceptance Criteria Summary
+- User can demo-login and see dashboard with example data.
+- User can add/edit/delete accounts and transactions (with validations).
+- Transfers adjust two accounts correctly and link entries.
+- Budgets display spent vs remaining for current month.
+- Analytics shows net cash flow and top categories for current month.
+- All views responsive and use HextaUI Card and Button.
+Example Data
+- Session
+- user: { id: 'u1', name: 'Alex Doe', email: 'alex@example.com' }
+- Accounts
+- [{ id: 'a1', name: 'Checking', type: 'checking', currency: 'USD' },
+{ id: 'a2', name: 'Savings', type: 'savings', currency: 'USD' },
+{ id: 'a3', name: 'Credit Card', type: 'credit', currency: 'USD' }]
+- Transactions (amountCents; dates use current month

@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --radius-ele: 0.8rem;
+  --radius-card: 1rem;
+  --color-background: hsl(0, 0%, 100%);
+  --color-foreground: hsl(0, 0%, 14%);
+  --color-card: hsl(0, 0%, 99%);
+  --color-card-foreground: hsl(0, 0%, 14%);
+  --color-primary: hsl(235, 100%, 60%);
+  --color-primary-foreground: hsl(0, 0%, 98%);
+  --color-secondary: hsl(0, 0%, 97%);
+  --color-secondary-foreground: hsl(0, 0%, 20%);
+  --color-muted: hsl(0, 0%, 97%);
+  --color-muted-foreground: hsl(0, 0%, 56%);
+  --color-accent: hsl(0, 0%, 96%);
+  --color-accent-foreground: hsl(0, 0%, 20%);
+  --color-destructive: hsl(9, 96%, 47%);
+  --color-destructive-foreground: hsl(0, 0%, 98%);
+  --color-border: hsl(0, 0%, 92%);
+  --color-input: hsl(0, 0%, 100%);
+  --color-ring: hsl(0, 0%, 71%);
+}
+
+* {
+  border-color: hsl(0, 0%, 92%);
+}
+
+body {
+  background-color: hsl(0, 0%, 100%);
+  color: hsl(0, 0%, 14%);
+}
